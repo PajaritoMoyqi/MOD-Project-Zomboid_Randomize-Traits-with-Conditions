@@ -2,7 +2,7 @@
 -- PM_RandomizeTraits = CharacterCreationProfession:derive("PM_RandomizeTraits")
 
 function CharacterCreationProfession:randomizeTraits() -- {{{
-    -- check the mod works
+    -- [PM] check the mod works
     print( "Hello world!!! - 1" );
 
     self:resetBuild();
@@ -24,13 +24,13 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
         self:onOptionMouseDown(self.addBadTraitBtn);
     end
 
-    -- Athletic, Strong (if I use MoreTraits)
+    -- [PM] Athletic, Strong (if I use MoreTraits)
     self.listboxTrait.selected = #self.listboxTrait.items - 3;
     self:onOptionMouseDown(self.addTraitBtn);
     self.listboxTrait.selected = #self.listboxTrait.items - 1;
     self:onOptionMouseDown(self.addTraitBtn);
 
-    -- Burn Ward Patient (if I use MoreTraits)
+    -- [PM] Burn Ward Patient (if I use MoreTraits)
     self.listboxBadTrait.selected = #self.listboxBadTrait.items;
     self:onOptionMouseDown(self.addBadTraitBtn);
 
