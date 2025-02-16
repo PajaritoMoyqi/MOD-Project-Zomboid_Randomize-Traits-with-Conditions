@@ -68,6 +68,19 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     print( PM_dump( PM_excludedTraits ) );
     print( PM_dump( PM_excludedBadTraits ) );
 
+    -- [PM] Athletic, Strong (if I use MoreTraits)
+    self.listboxTrait.selected = #self.listboxTrait.items - 3;
+    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+    self:onOptionMouseDown(self.addTraitBtn);
+    self.listboxTrait.selected = #self.listboxTrait.items - 1;
+    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+    self:onOptionMouseDown(self.addTraitBtn);
+
+    -- [PM] Burn Ward Patient (if I use MoreTraits)
+    self.listboxBadTrait.selected = #self.listboxBadTrait.items;
+    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+    self:onOptionMouseDown(self.addBadTraitBtn);
+
     -- [PM] Add initial traits
     local numTraits = ZombRand(5);
     for i=0,numTraits do
@@ -94,19 +107,6 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
             self.listboxBadTrait.selected = -1;
         end
     end
-
-    -- [PM] Athletic, Strong (if I use MoreTraits)
-    self.listboxTrait.selected = #self.listboxTrait.items - 3;
-    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
-    self:onOptionMouseDown(self.addTraitBtn);
-    self.listboxTrait.selected = #self.listboxTrait.items - 1;
-    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
-    self:onOptionMouseDown(self.addTraitBtn);
-
-    -- [PM] Burn Ward Patient (if I use MoreTraits)
-    self.listboxBadTrait.selected = #self.listboxBadTrait.items;
-    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
-    self:onOptionMouseDown(self.addBadTraitBtn);
 
     local rescue = 1000;
     while rescue > 0 do
