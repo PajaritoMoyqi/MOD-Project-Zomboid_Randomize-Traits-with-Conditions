@@ -68,7 +68,13 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     print( PM_dump( PM_excludedTraits ) );
     print( PM_dump( PM_excludedBadTraits ) );
 
-    -- [PM] Athletic, Strong (if I use MoreTraits)
+    -- [PM] Lucky, Organized, Athletic, Strong (if I use MoreTraits)
+    self.listboxTrait.selected = #self.listboxTrait.items - 52;
+    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+    self:onOptionMouseDown(self.addTraitBtn);
+    self.listboxTrait.selected = #self.listboxTrait.items - 27;
+    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+    self:onOptionMouseDown(self.addTraitBtn);
     self.listboxTrait.selected = #self.listboxTrait.items - 3;
     print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
     self:onOptionMouseDown(self.addTraitBtn);
@@ -76,7 +82,14 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
     self:onOptionMouseDown(self.addTraitBtn);
 
-    -- [PM] Burn Ward Patient (if I use MoreTraits)
+    -- [PM] Injered, Broke Leg, Burn Ward Patient (if I use MoreTraits)
+    -- Number changes because some of traits are removed by adding good (related) traits
+    self.listboxBadTrait.selected = #self.listboxBadTrait.items - 36;
+    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+    self:onOptionMouseDown(self.addBadTraitBtn);
+    self.listboxBadTrait.selected = #self.listboxBadTrait.items - 11;
+    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+    self:onOptionMouseDown(self.addBadTraitBtn);
     self.listboxBadTrait.selected = #self.listboxBadTrait.items;
     print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
     self:onOptionMouseDown(self.addBadTraitBtn);
