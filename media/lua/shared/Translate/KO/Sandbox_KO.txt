@@ -1,0 +1,6 @@
+Sandbox_KO = {
+	  Sandbox_PM_RandomizeTraits = "Randomize Traits with Conditions",
+
+  Sandbox_PM_RandomizeTraits_PreselectInjered = "Preselected: 부상",
+  Sandbox_PM_RandomizeTraits_PreselectInjered_tooltip = "'부상' 특성을 가진채 시작할지 정합니다.",
+}
