@@ -1,0 +1,4 @@
+UI_KO = {
+    UI_PM_RandomizeTraits_Options_Test = "테스트 설정",
+    UI_PM_RandomizeTraits_Options_Test_ToolTip = "과연 한글만으로도 동작할 것인가.",
+}
