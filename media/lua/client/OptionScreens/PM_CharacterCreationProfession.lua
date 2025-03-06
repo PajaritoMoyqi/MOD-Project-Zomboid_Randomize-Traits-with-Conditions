@@ -55,44 +55,67 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     -- [PM] 슈퍼 면역, 회피 기동
     local PM_excludedTraits = {
         self.listboxTrait.items[#self.listboxTrait.items-4].text,
-        self.listboxTrait.items[#self.listboxTrait.items-8].text
+        self.listboxTrait.items[#self.listboxTrait.items-8].text,
     };
     local PM_excludedBadTraits = {
         self.listboxBadTrait.items[#self.listboxBadTrait.items-1].text, -- [PM] 팔 절단
         self.listboxBadTrait.items[#self.listboxBadTrait.items-3].text, -- [PM] 청각장애
         self.listboxBadTrait.items[#self.listboxBadTrait.items-11].text, -- [PM] 대충대충
         self.listboxBadTrait.items[#self.listboxBadTrait.items-43].text, -- [PM] 비체계적인
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-44].text -- [PM] 불운
+        self.listboxBadTrait.items[#self.listboxBadTrait.items-44].text, -- [PM] 불운
     };
 
     print( PM_dump( PM_excludedTraits ) );
     print( PM_dump( PM_excludedBadTraits ) );
 
     -- [PM] Lucky, Organized, Athletic, Strong (if I use MoreTraits)
-    self.listboxTrait.selected = #self.listboxTrait.items - 52;
-    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
-    self:onOptionMouseDown(self.addTraitBtn);
-    self.listboxTrait.selected = #self.listboxTrait.items - 27;
-    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
-    self:onOptionMouseDown(self.addTraitBtn);
-    self.listboxTrait.selected = #self.listboxTrait.items - 3;
-    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
-    self:onOptionMouseDown(self.addTraitBtn);
-    self.listboxTrait.selected = #self.listboxTrait.items - 1;
-    print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
-    self:onOptionMouseDown(self.addTraitBtn);
-
+    local PM_preselectedTraits = {
+        self.listboxTrait.items[#self.listboxTrait.items-52].text,
+        self.listboxTrait.items[#self.listboxTrait.items-27].text,
+        self.listboxTrait.items[#self.listboxTrait.items-3].text,
+        self.listboxTrait.items[#self.listboxTrait.items-1].text,
+    };
     -- [PM] Injered, Broke Leg, Burn Ward Patient (if I use MoreTraits)
-    -- Number changes because some of traits are removed by adding good (related) traits
-    self.listboxBadTrait.selected = #self.listboxBadTrait.items - 36;
-    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
-    self:onOptionMouseDown(self.addBadTraitBtn);
-    self.listboxBadTrait.selected = #self.listboxBadTrait.items - 11;
-    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
-    self:onOptionMouseDown(self.addBadTraitBtn);
-    self.listboxBadTrait.selected = #self.listboxBadTrait.items;
-    print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
-    self:onOptionMouseDown(self.addBadTraitBtn);
+    local PM_preselectedBadTraits = {
+        self.listboxBadTrait.items[#self.listboxBadTrait.items-45].text,
+        self.listboxBadTrait.items[#self.listboxBadTrait.items-15].text,
+        self.listboxBadTrait.items[#self.listboxBadTrait.items].text,
+    };
+
+    print( PM_dump( PM_preselectedTraits ) );
+    print( PM_dump( PM_preselectedBadTraits ) );
+
+    local PM_i = 0;
+    while PM_i < #self.listboxTrait.items do
+        local numOfTraits = #self.listboxTrait.items;
+
+        self.listboxTrait.selected = #self.listboxTrait.items - PM_i;
+        if ( PM_has_value(PM_preselectedTraits, self.listboxTrait.items[self.listboxTrait.selected].text) ) then
+            print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+            self:onOptionMouseDown(self.addTraitBtn);
+        end
+        
+        PM_i = PM_i + 1 - (numOfTraits - #self.listboxTrait.items);
+        if ( PM_i < 0 ) then
+            PM_i = 0;
+        end
+    end
+    
+    PM_i = 0;
+    while PM_i < #self.listboxBadTrait.items do
+        local numOfBadTraits = #self.listboxBadTrait.items;
+
+        self.listboxBadTrait.selected = #self.listboxBadTrait.items - PM_i;
+        if ( PM_has_value(PM_preselectedBadTraits, self.listboxBadTrait.items[self.listboxBadTrait.selected].text) ) then
+            print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+            self:onOptionMouseDown(self.addBadTraitBtn);
+        end
+        
+        PM_i = PM_i + 1 - (numOfBadTraits - #self.listboxBadTrait.items);
+        if ( PM_i < 0 ) then
+            PM_i = 0;
+        end
+    end
 
     -- [PM] Add initial traits
     local numTraits = ZombRand(5);
