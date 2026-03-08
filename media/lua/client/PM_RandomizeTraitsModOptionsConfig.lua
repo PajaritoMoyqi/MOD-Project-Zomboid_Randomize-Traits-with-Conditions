@@ -8,7 +8,7 @@ PM_RandomizeTraits.settings.AutoReRandomize = false;
 if ModOptions and ModOptions.getInstance then
   local function onModOptionsApply(optionValues)
     PM_RandomizeTraits.settings.Preselect = optionValues.settings.options.Preselect;
-    PM_RandomizeTraits.settings.Preselect = optionValues.settings.options.HardPreselect;
+    PM_RandomizeTraits.settings.HardPreselect = optionValues.settings.options.HardPreselect;
     PM_RandomizeTraits.settings.AutoReRandomize = optionValues.settings.options.AutoReRandomize;
   end
   local SETTINGS = {
