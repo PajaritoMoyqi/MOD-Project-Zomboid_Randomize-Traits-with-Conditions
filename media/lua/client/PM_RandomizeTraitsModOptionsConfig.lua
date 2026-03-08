@@ -74,7 +74,8 @@ if ModOptions and ModOptions.getInstance then
         PM_RandomizeTraits.traitSettings[traitID] = "Normal"
       end
     end
-    -- Reload to pick up any saved trait values
+    -- Re-register with updated options_data including traits
+    ModOptions:getInstance(SETTINGS)
     ModOptions:loadFile()
   end)
 
