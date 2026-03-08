@@ -21,34 +21,43 @@ if ModOptions and ModOptions.getInstance then
     end
   end
 
-  -- Initialize ModOptions with all traits inside OnGameBoot
-  -- (TraitFactory is not populated at file load time)
-  Events.OnGameBoot.Add(function()
-    local options_data = {
-      Preselect = {
-        name = "UI_PM_RandomizeTraits_Options_Preselect",
-        tooltip = "UI_PM_RandomizeTraits_Options_Preselect_ToolTip",
-        default = true,
-        OnApplyMainMenu = onModOptionsApply,
-        OnApplyInGame = onModOptionsApply,
-      },
-      HardPreselect = {
-        name = "UI_PM_RandomizeTraits_Options_HardPreselect",
-        tooltip = "UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip",
-        default = false,
-        OnApplyMainMenu = onModOptionsApply,
-        OnApplyInGame = onModOptionsApply,
-      },
-      AutoReRandomize = {
-        name = "UI_PM_RandomizeTraits_Options_AutoReRandomize",
-        tooltip = "UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip",
-        default = false,
-        OnApplyMainMenu = onModOptionsApply,
-        OnApplyInGame = onModOptionsApply,
-      },
-    }
+  -- Register ModOptions at file load time (basic options first)
+  local options_data = {
+    Preselect = {
+      name = "UI_PM_RandomizeTraits_Options_Preselect",
+      tooltip = "UI_PM_RandomizeTraits_Options_Preselect_ToolTip",
+      default = true,
+      OnApplyMainMenu = onModOptionsApply,
+      OnApplyInGame = onModOptionsApply,
+    },
+    HardPreselect = {
+      name = "UI_PM_RandomizeTraits_Options_HardPreselect",
+      tooltip = "UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip",
+      default = false,
+      OnApplyMainMenu = onModOptionsApply,
+      OnApplyInGame = onModOptionsApply,
+    },
+    AutoReRandomize = {
+      name = "UI_PM_RandomizeTraits_Options_AutoReRandomize",
+      tooltip = "UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip",
+      default = false,
+      OnApplyMainMenu = onModOptionsApply,
+      OnApplyInGame = onModOptionsApply,
+    },
+  }
 
-    -- Dynamically add all traits from TraitFactory
+  local SETTINGS = {
+    options_data = options_data,
+    mod_id = 'PM_RandomizeTraits',
+    mod_shortname = 'Randomize Traits',
+    mod_fullname = 'Randomize Traits with Conditions',
+  }
+  ModOptions:getInstance(SETTINGS)
+  ModOptions:loadFile()
+
+  -- Add trait options after TraitFactory is populated
+  -- (options_data is a reference, so additions are visible to ModOptions)
+  Events.OnGameBoot.Add(function()
     local allTraits = TraitFactory.getTraits()
     if allTraits then
       for i = 0, allTraits:size() - 1 do
@@ -65,18 +74,11 @@ if ModOptions and ModOptions.getInstance then
         PM_RandomizeTraits.traitSettings[traitID] = "Normal"
       end
     end
-
-    local SETTINGS = {
-      options_data = options_data,
-      mod_id = 'PM_RandomizeTraits',
-      mod_shortname = 'Randomize Traits',
-      mod_fullname = 'Randomize Traits with Conditions',
-    }
-    ModOptions:getInstance(SETTINGS)
+    -- Reload to pick up any saved trait values
     ModOptions:loadFile()
+  end)
 
-    Events.OnPreMapLoad.Add(function()
-      onModOptionsApply({ settings = SETTINGS })
-    end)
+  Events.OnPreMapLoad.Add(function()
+    onModOptionsApply({ settings = SETTINGS })
   end)
 end
