@@ -1,9 +1,9 @@
 UI_EN = {
     UI_PM_RandomizeTraits_Options_Preselect = "Preselect Traits",
     UI_PM_RandomizeTraits_Options_Preselect_ToolTip = "Pre-selected traits will be added before randomizing.",
-    UI_PM_RandomizeTraits_Options_HardPreselect = "Hard Preselect (Strict)",
-    UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip = "Pre-selected traits will never be removed during balancing.",
-    UI_PM_RandomizeTraits_Options_AutoReRandomize = "Auto Re-Randomize",
-    UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip = "Automatically re-randomize traits when selecting a profession.",
+    UI_PM_RandomizeTraits_Options_HardPreselect = "Always Include Preselected Traits",
+    UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip = "Traits marked as Preselect will always be included in the result.",
+    UI_PM_RandomizeTraits_Options_AutoReRandomize = "Auto Re-Randomize on Profession Change",
+    UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip = "Automatically re-randomize traits when changing profession, as selected traits may not suit the new profession.",
     UI_PM_RandomizeTraits_TraitSetting_ToolTip = "Normal: included in random pool / Exclude: never randomly selected / Preselect: always included",
 }

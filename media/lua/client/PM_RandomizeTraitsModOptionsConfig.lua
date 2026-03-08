@@ -3,16 +3,16 @@ PM_RandomizeTraits.settings = PM_RandomizeTraits.settings or {};
 PM_RandomizeTraits.traitSettings = {};
 
 PM_RandomizeTraits.settings.Preselect = true;
-PM_RandomizeTraits.settings.HardPreselect = false;
-PM_RandomizeTraits.settings.AutoReRandomize = false;
+PM_RandomizeTraits.settings.HardPreselect = true;
+PM_RandomizeTraits.settings.AutoReRandomize = true;
 
 if ModOptions and ModOptions.getInstance then
   -- Build trait settings inside OnGameBoot (TraitFactory is available here)
   Events.OnGameBoot.Add(function()
     local OPTIONS = {
       Preselect = true,
-      HardPreselect = false,
-      AutoReRandomize = false,
+      HardPreselect = true,
+      AutoReRandomize = true,
     }
 
     -- Add all traits as dropdown options (default = 1 = Normal)
