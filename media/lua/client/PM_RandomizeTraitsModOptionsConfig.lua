@@ -51,13 +51,13 @@ if ModOptions and ModOptions.getInstance then
     }
 
     -- TEST: This option proves OnGameBoot fired
-    TestOnGameBoot = {
+    options_data["TestOnGameBoot"] = {
       name = "TEST: OnGameBoot fired",
       tooltip = "If you see this, OnGameBoot callback is working",
       default = true,
       OnApplyMainMenu = onModOptionsApply,
       OnApplyInGame = onModOptionsApply,
-    },
+    }
 
     -- Dynamically add all traits from TraitFactory
     local allTraits = TraitFactory.getTraits()
