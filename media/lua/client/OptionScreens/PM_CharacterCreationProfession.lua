@@ -16,6 +16,11 @@ local function PM_buildTraitLists()
     local PM_excludedBadTraits = {}
     local PM_preselectedBadTraits = {}
 
+    -- [1] Preselect master toggle: if OFF, all traits are Normal
+    if not PM_RandomizeTraits.settings.Preselect then
+        return PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits
+    end
+
     local allTraits = TraitFactory.getTraits()
     for i = 0, allTraits:size() - 1 do
         local trait = allTraits:get(i)
@@ -40,16 +45,11 @@ local function PM_buildTraitLists()
     return PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits
 end
 
-function CharacterCreationProfession:randomizeTraits() -- {{{
-    self:resetBuild();
+-- Flag to prevent recursion when AutoReRandomize is enabled
+local PM_isRandomizing = false
 
-    -- [PM] select random profession
-    local size = #self.listboxProf.items;
-    local prof = ZombRand(size)+1;
-    self.listboxProf.selected = prof;
-    self:onSelectProf(self.listboxProf.items[self.listboxProf.selected].item);
-
-    -- [PM] Build trait lists from ModOptions
+-- Core trait randomization logic (without profession selection)
+local function PM_doTraitRandomization(self)
     local PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits = PM_buildTraitLists()
 
     -- [PM] Add preselected good traits
@@ -109,6 +109,8 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     end
 
     -- [PM] Balance points
+    -- [2] HardPreselect: if ON, preselected traits are never removed during balancing
+    local hardPreselect = PM_RandomizeTraits.settings.HardPreselect
     local rescue = 1000;
     while rescue > 0 do
         rescue = rescue - 1;
@@ -122,9 +124,12 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                     local rescue2 = 5;
                     while rescue2 > 0 do
                         local i = ZombRand(#self.listboxTraitSelected.items)+1;
-                        if self.listboxTraitSelected.items[i].item:getCost() > 0 and math.abs(self.listboxTraitSelected.items[i].item:getCost()) <= math.abs(self:PointToSpend()) then
-                            self.listboxTraitSelected.selected = i;
-                            self:onOptionMouseDown(self.removeTraitBtn);
+                        local traitItem = self.listboxTraitSelected.items[i].item;
+                        if traitItem:getCost() > 0 and math.abs(traitItem:getCost()) <= math.abs(self:PointToSpend()) then
+                            if not (hardPreselect and PM_has_value(PM_preselectedTraits, traitItem:getType())) then
+                                self.listboxTraitSelected.selected = i;
+                                self:onOptionMouseDown(self.removeTraitBtn);
+                            end
                         end
                         rescue2 = rescue2 - 1;
                     end
@@ -145,9 +150,12 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                     local rescue2 = 5;
                     while rescue2 > 0 do
                         local i = ZombRand(#self.listboxTraitSelected.items)+1;
-                        if self.listboxTraitSelected.items[i].item:getCost() < 0 and math.abs(self.listboxTraitSelected.items[i].item:getCost()) <= math.abs(self:PointToSpend()) then
-                            self.listboxTraitSelected.selected = i;
-                            self:onOptionMouseDown(self.removeTraitBtn);
+                        local traitItem = self.listboxTraitSelected.items[i].item;
+                        if traitItem:getCost() < 0 and math.abs(traitItem:getCost()) <= math.abs(self:PointToSpend()) then
+                            if not (hardPreselect and PM_has_value(PM_preselectedBadTraits, traitItem:getType())) then
+                                self.listboxTraitSelected.selected = i;
+                                self:onOptionMouseDown(self.removeTraitBtn);
+                            end
                         end
                         rescue2 = rescue2 - 1;
                     end
@@ -163,6 +171,33 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                 end
             end
         end
+    end
+end
+
+function CharacterCreationProfession:randomizeTraits() -- {{{
+    PM_isRandomizing = true;
+
+    self:resetBuild();
+
+    -- [PM] select random profession
+    local size = #self.listboxProf.items;
+    local prof = ZombRand(size)+1;
+    self.listboxProf.selected = prof;
+    self:onSelectProf(self.listboxProf.items[self.listboxProf.selected].item);
+
+    PM_doTraitRandomization(self);
+
+    PM_isRandomizing = false;
+end
+
+-- [3] AutoReRandomize: re-randomize traits when user manually selects a profession
+local PM_original_onSelectProf = CharacterCreationProfession.onSelectProf
+function CharacterCreationProfession:onSelectProf(item)
+    PM_original_onSelectProf(self, item)
+    if PM_RandomizeTraits.settings.AutoReRandomize and not PM_isRandomizing then
+        PM_isRandomizing = true;
+        PM_doTraitRandomization(self);
+        PM_isRandomizing = false;
     end
 end
 
