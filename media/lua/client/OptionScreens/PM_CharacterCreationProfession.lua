@@ -24,31 +24,32 @@ function PM_has_value(arr, val)
     return false
 end
 
--- Build excluded/preselected trait lists from SandboxVars
--- Setting values: 1 = Normal, 2 = Exclude, 3 = Preselect
+-- Build excluded/preselected trait lists from ModOptions (PM_RandomizeTraits.traitSettings)
+-- Setting values: "Normal" / "Exclude" / "Preselect"
 local function PM_buildTraitLists()
     local PM_excludedTraits = {}
     local PM_preselectedTraits = {}
     local PM_excludedBadTraits = {}
     local PM_preselectedBadTraits = {}
 
-    local goodTraitIDs = {"superimmune", "evasive", "Lucky", "Organized", "Athletic", "Strong"}
-    for _, traitID in ipairs(goodTraitIDs) do
-        local setting = SandboxVars.PM_RandomizeTraits["Trait_" .. traitID]
-        if setting == 2 then
-            table.insert(PM_excludedTraits, traitID)
-        elseif setting == 3 then
-            table.insert(PM_preselectedTraits, traitID)
-        end
-    end
+    local allTraits = TraitFactory.getTraits()
+    for i = 0, allTraits:size() - 1 do
+        local trait = allTraits:get(i)
+        local traitID = trait:getType()
+        local setting = PM_RandomizeTraits.traitSettings[traitID] or "Normal"
 
-    local badTraitIDs = {"amputee", "Deaf", "incomprehensive", "Disorganized", "Unlucky", "injured", "broke", "burned"}
-    for _, traitID in ipairs(badTraitIDs) do
-        local setting = SandboxVars.PM_RandomizeTraits["Trait_" .. traitID]
-        if setting == 2 then
-            table.insert(PM_excludedBadTraits, traitID)
-        elseif setting == 3 then
-            table.insert(PM_preselectedBadTraits, traitID)
+        if setting == "Exclude" then
+            if trait:getCost() >= 0 then
+                table.insert(PM_excludedTraits, traitID)
+            else
+                table.insert(PM_excludedBadTraits, traitID)
+            end
+        elseif setting == "Preselect" then
+            if trait:getCost() >= 0 then
+                table.insert(PM_preselectedTraits, traitID)
+            else
+                table.insert(PM_preselectedBadTraits, traitID)
+            end
         end
     end
 
@@ -66,7 +67,7 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     self.listboxProf.selected = prof;
     self:onSelectProf(self.listboxProf.items[self.listboxProf.selected].item);
 
-    -- [PM] Build trait lists from SandboxVars
+    -- [PM] Build trait lists from ModOptions
     local PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits = PM_buildTraitLists()
 
     print( "PM_excludedTraits: " .. PM_dump(PM_excludedTraits) );
