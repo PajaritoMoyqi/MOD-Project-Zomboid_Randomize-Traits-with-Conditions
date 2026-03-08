@@ -6,6 +6,8 @@ PM_RandomizeTraits.settings.Preselect = true;
 PM_RandomizeTraits.settings.HardPreselect = false;
 PM_RandomizeTraits.settings.AutoReRandomize = false;
 
+print("[PM_RandomizeTraits] File loaded. ModOptions=" .. tostring(ModOptions) .. ", getInstance=" .. tostring(ModOptions and ModOptions.getInstance))
+
 if ModOptions and ModOptions.getInstance then
   local function onModOptionsApply(optionValues)
     PM_RandomizeTraits.settings.Preselect = optionValues.settings.options.Preselect;
