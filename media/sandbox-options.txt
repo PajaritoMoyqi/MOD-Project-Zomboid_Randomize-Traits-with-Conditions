@@ -1,1 +1,9 @@
 VERSION = 1,
+
+option PM_RandomizeTraits.TestOption
+{
+    type = boolean,
+    default = true,
+    page = PM_RandomizeTraits,
+    translation = PM_RandomizeTraits_TestOption,
+}
