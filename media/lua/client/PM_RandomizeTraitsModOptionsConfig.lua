@@ -45,24 +45,6 @@ if ModOptions and ModOptions.getInstance then
     },
   }
 
-  -- Dynamically add all traits from TraitFactory
-  local allTraits = TraitFactory.getTraits()
-  if allTraits then
-    for i = 0, allTraits:size() - 1 do
-      local trait = allTraits:get(i)
-      local traitID = trait:getType()
-      options_data["Trait_" .. traitID] = {
-        name = trait:getLabel(),
-        tooltip = "UI_PM_RandomizeTraits_TraitSetting_ToolTip",
-        default = "Normal",
-        values = {"Normal", "Exclude", "Preselect"},
-        OnApplyMainMenu = onModOptionsApply,
-        OnApplyInGame = onModOptionsApply,
-      }
-      PM_RandomizeTraits.traitSettings[traitID] = "Normal"
-    end
-  end
-
   local SETTINGS = {
     options_data = options_data,
     mod_id = 'PM_RandomizeTraits',
@@ -71,6 +53,30 @@ if ModOptions and ModOptions.getInstance then
   }
   ModOptions:getInstance(SETTINGS)
   ModOptions:loadFile()
+
+  -- Dynamically add all traits AFTER TraitFactory is populated
+  Events.OnGameBoot.Add(function()
+    local allTraits = TraitFactory.getTraits()
+    if allTraits then
+      for i = 0, allTraits:size() - 1 do
+        local trait = allTraits:get(i)
+        local traitID = trait:getType()
+        if not options_data["Trait_" .. traitID] then
+          options_data["Trait_" .. traitID] = {
+            name = trait:getLabel(),
+            tooltip = "UI_PM_RandomizeTraits_TraitSetting_ToolTip",
+            default = "Normal",
+            values = {"Normal", "Exclude", "Preselect"},
+            OnApplyMainMenu = onModOptionsApply,
+            OnApplyInGame = onModOptionsApply,
+          }
+          PM_RandomizeTraits.traitSettings[traitID] = "Normal"
+        end
+      end
+      -- Reload saved settings for the newly added trait options
+      ModOptions:loadFile()
+    end
+  end)
 
   Events.OnPreMapLoad.Add(function()
     onModOptionsApply({ settings = SETTINGS })
