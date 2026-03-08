@@ -29,31 +29,7 @@ if ModOptions and ModOptions.getInstance then
 
     local settings = ModOptions:getInstance(OPTIONS, "PM_RandomizeTraits", "Randomize Traits")
 
-    -- Configure basic option names/tooltips
-    local preselect = settings:getData("Preselect")
-    preselect.name = getText("UI_PM_RandomizeTraits_Options_Preselect")
-    preselect.tooltip = getText("UI_PM_RandomizeTraits_Options_Preselect_ToolTip")
-
-    local hardPreselect = settings:getData("HardPreselect")
-    hardPreselect.name = getText("UI_PM_RandomizeTraits_Options_HardPreselect")
-    hardPreselect.tooltip = getText("UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip")
-
-    local autoReRandomize = settings:getData("AutoReRandomize")
-    autoReRandomize.name = getText("UI_PM_RandomizeTraits_Options_AutoReRandomize")
-    autoReRandomize.tooltip = getText("UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip")
-
-    -- Configure dropdown choices for each trait
-    for _, traitInfo in ipairs(traitInfos) do
-      local drop = settings:getData("Trait_" .. traitInfo.id)
-      drop[1] = "Normal"
-      drop[2] = "Exclude"
-      drop[3] = "Preselect"
-      drop.name = traitInfo.label
-      drop.tooltip = getText("UI_PM_RandomizeTraits_TraitSetting_ToolTip")
-      PM_RandomizeTraits.traitSettings[traitInfo.id] = "Normal"
-    end
-
-    -- Apply callback to read settings
+    -- Read OPTIONS table into PM_RandomizeTraits settings
     local function applySettings()
       PM_RandomizeTraits.settings.Preselect = OPTIONS.Preselect
       PM_RandomizeTraits.settings.HardPreselect = OPTIONS.HardPreselect
@@ -71,6 +47,41 @@ if ModOptions and ModOptions.getInstance then
       end
     end
 
+    -- Configure basic option names/tooltips + callbacks
+    local preselect = settings:getData("Preselect")
+    preselect.name = getText("UI_PM_RandomizeTraits_Options_Preselect")
+    preselect.tooltip = getText("UI_PM_RandomizeTraits_Options_Preselect_ToolTip")
+    preselect.OnApplyMainMenu = applySettings
+    preselect.OnApplyInGame = applySettings
+
+    local hardPreselect = settings:getData("HardPreselect")
+    hardPreselect.name = getText("UI_PM_RandomizeTraits_Options_HardPreselect")
+    hardPreselect.tooltip = getText("UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip")
+    hardPreselect.OnApplyMainMenu = applySettings
+    hardPreselect.OnApplyInGame = applySettings
+
+    local autoReRandomize = settings:getData("AutoReRandomize")
+    autoReRandomize.name = getText("UI_PM_RandomizeTraits_Options_AutoReRandomize")
+    autoReRandomize.tooltip = getText("UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip")
+    autoReRandomize.OnApplyMainMenu = applySettings
+    autoReRandomize.OnApplyInGame = applySettings
+
+    -- Configure dropdown choices for each trait + callbacks
+    for _, traitInfo in ipairs(traitInfos) do
+      local drop = settings:getData("Trait_" .. traitInfo.id)
+      drop[1] = "Normal"
+      drop[2] = "Exclude"
+      drop[3] = "Preselect"
+      drop.name = traitInfo.label
+      drop.tooltip = getText("UI_PM_RandomizeTraits_TraitSetting_ToolTip")
+      drop.OnApplyMainMenu = applySettings
+      drop.OnApplyInGame = applySettings
+    end
+
+    -- Apply saved settings immediately (OPTIONS was updated by loadFile)
+    applySettings()
+
+    -- Also apply on map load
     Events.OnPreMapLoad.Add(applySettings)
   end)
 end
