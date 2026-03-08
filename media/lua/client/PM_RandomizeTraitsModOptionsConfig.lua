@@ -6,11 +6,15 @@ PM_RandomizeTraits.settings.Preselect = true;
 PM_RandomizeTraits.settings.HardPreselect = false;
 PM_RandomizeTraits.settings.AutoReRandomize = false;
 
--- DEBUG: Check TraitFactory availability at file load time
-local _debugTraits = TraitFactory.getTraits()
-print("[PM_RandomizeTraits] FILE LOAD TIME - TraitFactory.getTraits() = " .. tostring(_debugTraits))
-if _debugTraits then
-  print("[PM_RandomizeTraits] FILE LOAD TIME - trait count = " .. tostring(_debugTraits:size()))
+-- DEBUG: Check what's available at file load time
+print("[PM_RandomizeTraits] === FILE LOADED ===")
+print("[PM_RandomizeTraits] TraitFactory = " .. tostring(TraitFactory))
+if TraitFactory then
+  local ok, result = pcall(TraitFactory.getTraits)
+  print("[PM_RandomizeTraits] getTraits pcall ok=" .. tostring(ok) .. " result=" .. tostring(result))
+  if ok and result then
+    print("[PM_RandomizeTraits] trait count = " .. tostring(result:size()))
+  end
 end
 
 if ModOptions and ModOptions.getInstance then
