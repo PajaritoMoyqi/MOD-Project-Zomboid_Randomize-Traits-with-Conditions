@@ -1,9 +1,143 @@
 VERSION = 1,
 
-option PM_RandomizeTraits.PreselectInjered
+-- ===== Good Traits =====
+option PM_RandomizeTraits.Trait_superimmune
 {
-	type = boolean,
-  default = false,
-	page = PM_RandomizeTraits,
-  translation = PM_RandomizeTraits_PreselectInjered,
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_GoodTraits,
+	translation = PM_RandomizeTraits_Trait_superimmune,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_evasive
+{
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_GoodTraits,
+	translation = PM_RandomizeTraits_Trait_evasive,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Lucky
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_GoodTraits,
+	translation = PM_RandomizeTraits_Trait_Lucky,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Organized
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_GoodTraits,
+	translation = PM_RandomizeTraits_Trait_Organized,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Athletic
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_GoodTraits,
+	translation = PM_RandomizeTraits_Trait_Athletic,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Strong
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_GoodTraits,
+	translation = PM_RandomizeTraits_Trait_Strong,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+-- ===== Bad Traits =====
+option PM_RandomizeTraits.Trait_amputee
+{
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_amputee,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Deaf
+{
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_Deaf,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_incomprehensive
+{
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_incomprehensive,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Disorganized
+{
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_Disorganized,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_Unlucky
+{
+	type = enum,
+	numValues = 3,
+	default = 2,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_Unlucky,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_injured
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_injured,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_broke
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_broke,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
+}
+
+option PM_RandomizeTraits.Trait_burned
+{
+	type = enum,
+	numValues = 3,
+	default = 3,
+	page = PM_RandomizeTraits_BadTraits,
+	translation = PM_RandomizeTraits_Trait_burned,
+	valueTranslation = PM_RandomizeTraits_TraitSetting,
 }

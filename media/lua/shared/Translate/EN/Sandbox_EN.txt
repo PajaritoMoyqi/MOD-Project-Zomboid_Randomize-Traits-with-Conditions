@@ -1,0 +1,24 @@
+Sandbox_EN = {
+    Sandbox_PM_RandomizeTraits_GoodTraits = "Randomize Traits - Good Traits",
+    Sandbox_PM_RandomizeTraits_BadTraits = "Randomize Traits - Bad Traits",
+
+    Sandbox_PM_RandomizeTraits_TraitSetting_1 = "Normal",
+    Sandbox_PM_RandomizeTraits_TraitSetting_2 = "Exclude",
+    Sandbox_PM_RandomizeTraits_TraitSetting_3 = "Preselect",
+
+    Sandbox_PM_RandomizeTraits_Trait_superimmune = "Super-Immune",
+    Sandbox_PM_RandomizeTraits_Trait_evasive = "Evasive",
+    Sandbox_PM_RandomizeTraits_Trait_Lucky = "Lucky",
+    Sandbox_PM_RandomizeTraits_Trait_Organized = "Organized",
+    Sandbox_PM_RandomizeTraits_Trait_Athletic = "Athletic",
+    Sandbox_PM_RandomizeTraits_Trait_Strong = "Strong",
+
+    Sandbox_PM_RandomizeTraits_Trait_amputee = "Amputee",
+    Sandbox_PM_RandomizeTraits_Trait_Deaf = "Deaf",
+    Sandbox_PM_RandomizeTraits_Trait_incomprehensive = "Incomprehensive",
+    Sandbox_PM_RandomizeTraits_Trait_Disorganized = "Disorganized",
+    Sandbox_PM_RandomizeTraits_Trait_Unlucky = "Unlucky",
+    Sandbox_PM_RandomizeTraits_Trait_injured = "Injured",
+    Sandbox_PM_RandomizeTraits_Trait_broke = "Broke Leg",
+    Sandbox_PM_RandomizeTraits_Trait_burned = "Burn Ward Patient",
+}
