@@ -50,6 +50,11 @@ local PM_isRandomizing = false
 
 -- Core trait randomization logic (without profession selection)
 local function PM_doTraitRandomization(self)
+    -- Sync latest settings from OPTIONS table before randomizing
+    if PM_RandomizeTraits.applySettings then
+        PM_RandomizeTraits.applySettings()
+    end
+
     local PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits = PM_buildTraitLists()
 
     -- [PM] Add preselected good traits

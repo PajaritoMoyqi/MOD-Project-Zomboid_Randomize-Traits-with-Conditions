@@ -78,6 +78,9 @@ if ModOptions and ModOptions.getInstance then
       drop.OnApplyInGame = applySettings
     end
 
+    -- Expose applySettings so it can be called before randomizing
+    PM_RandomizeTraits.applySettings = applySettings
+
     -- Apply saved settings immediately (OPTIONS was updated by loadFile)
     applySettings()
 
