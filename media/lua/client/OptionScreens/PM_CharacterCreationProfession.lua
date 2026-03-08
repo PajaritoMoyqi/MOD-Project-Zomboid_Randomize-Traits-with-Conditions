@@ -1,19 +1,3 @@
--- require('OptionScreens/CharacterCreationProfession');
--- PM_RandomizeTraits = CharacterCreationProfession:derive("PM_RandomizeTraits")
-
-function PM_dump(o)
-    if type(o) == 'table' then
-        local s = '{ '
-        for k,v in pairs(o) do
-            if type(k) ~= 'number' then k = '"'..k..'"' end
-            s = s .. '['..k..'] = ' .. PM_dump(v) .. ','
-        end
-        return s .. '} '
-    else
-       return tostring(o)
-    end
-end
-
 function PM_has_value(arr, val)
     for index, value in ipairs(arr) do
         if value == val then
@@ -57,8 +41,6 @@ local function PM_buildTraitLists()
 end
 
 function CharacterCreationProfession:randomizeTraits() -- {{{
-    print( "Hello world!!! - 1" );
-
     self:resetBuild();
 
     -- [PM] select random profession
@@ -70,11 +52,6 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
     -- [PM] Build trait lists from ModOptions
     local PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits = PM_buildTraitLists()
 
-    print( "PM_excludedTraits: " .. PM_dump(PM_excludedTraits) );
-    print( "PM_preselectedTraits: " .. PM_dump(PM_preselectedTraits) );
-    print( "PM_excludedBadTraits: " .. PM_dump(PM_excludedBadTraits) );
-    print( "PM_preselectedBadTraits: " .. PM_dump(PM_preselectedBadTraits) );
-
     -- [PM] Add preselected good traits
     local PM_i = 0;
     while PM_i < #self.listboxTrait.items do
@@ -82,7 +59,6 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
 
         self.listboxTrait.selected = #self.listboxTrait.items - PM_i;
         if ( PM_has_value(PM_preselectedTraits, self.listboxTrait.items[self.listboxTrait.selected].item:getType()) ) then
-            print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].item:getType() );
             self:onOptionMouseDown(self.addTraitBtn);
         end
 
@@ -99,7 +75,6 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
 
         self.listboxBadTrait.selected = #self.listboxBadTrait.items - PM_i;
         if ( PM_has_value(PM_preselectedBadTraits, self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType()) ) then
-            print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType() );
             self:onOptionMouseDown(self.addBadTraitBtn);
         end
 
@@ -115,10 +90,8 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
         self.listboxTrait.selected = ZombRand(#self.listboxTrait.items)+1;
         local traitType = self.listboxTrait.items[self.listboxTrait.selected].item:getType();
         if ( not PM_has_value(PM_excludedTraits, traitType) ) then
-            print( "Init: Add good trait - ", traitType );
             self:onOptionMouseDown(self.addTraitBtn);
         else
-            print( "Init: Excluded good trait - ", traitType );
             self.listboxTrait.selected = -1;
         end
     end
@@ -129,10 +102,8 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
         self.listboxBadTrait.selected = ZombRand(#self.listboxBadTrait.items)+1;
         local traitType = self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType();
         if ( not PM_has_value(PM_excludedBadTraits, traitType) ) then
-            print( "Init: Add bad trait - ", traitType );
             self:onOptionMouseDown(self.addBadTraitBtn);
         else
-            print( "Init: Excluded bad trait - ", traitType );
             self.listboxBadTrait.selected = -1;
         end
     end
@@ -162,10 +133,8 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                     self.listboxBadTrait.selected = ZombRand(#self.listboxBadTrait.items)+1;
                     local traitType = self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType();
                     if ( not PM_has_value(PM_excludedBadTraits, traitType) ) then
-                        print( "On: Add bad trait - ", traitType );
                         self:onOptionMouseDown(self.addBadTraitBtn);
                     else
-                        print( "On: Excluded bad trait - ", traitType );
                         self.listboxBadTrait.selected = -1;
                     end
                 end
@@ -187,10 +156,8 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                     self.listboxTrait.selected = ZombRand(#self.listboxTrait.items)+1;
                     local traitType = self.listboxTrait.items[self.listboxTrait.selected].item:getType();
                     if ( not PM_has_value(PM_excludedTraits, traitType) ) then
-                        print( "On: Add good trait - ", traitType );
                         self:onOptionMouseDown(self.addTraitBtn);
                     else
-                        print( "On: Excluded good trait - ", traitType );
                         self.listboxTrait.selected = -1;
                     end
                 end
