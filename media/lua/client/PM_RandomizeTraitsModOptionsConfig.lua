@@ -6,17 +6,6 @@ PM_RandomizeTraits.settings.Preselect = true;
 PM_RandomizeTraits.settings.HardPreselect = false;
 PM_RandomizeTraits.settings.AutoReRandomize = false;
 
--- DEBUG: Check what's available at file load time
-print("[PM_RandomizeTraits] === FILE LOADED ===")
-print("[PM_RandomizeTraits] TraitFactory = " .. tostring(TraitFactory))
-if TraitFactory then
-  local ok, result = pcall(TraitFactory.getTraits)
-  print("[PM_RandomizeTraits] getTraits pcall ok=" .. tostring(ok) .. " result=" .. tostring(result))
-  if ok and result then
-    print("[PM_RandomizeTraits] trait count = " .. tostring(result:size()))
-  end
-end
-
 if ModOptions and ModOptions.getInstance then
   local function onModOptionsApply(optionValues)
     PM_RandomizeTraits.settings.Preselect = optionValues.settings.options.Preselect;
@@ -54,28 +43,24 @@ if ModOptions and ModOptions.getInstance then
       OnApplyMainMenu = onModOptionsApply,
       OnApplyInGame = onModOptionsApply,
     },
+    -- TEST A: boolean option (same format as working options)
+    TestBoolean = {
+      name = "TEST: Boolean Option",
+      tooltip = "This tests if a simple boolean option works here",
+      default = true,
+      OnApplyMainMenu = onModOptionsApply,
+      OnApplyInGame = onModOptionsApply,
+    },
+    -- TEST B: string values option (same format as trait options)
+    TestValues = {
+      name = "TEST: Values Option",
+      tooltip = "This tests if values/enum format works",
+      default = "Normal",
+      values = {"Normal", "Exclude", "Preselect"},
+      OnApplyMainMenu = onModOptionsApply,
+      OnApplyInGame = onModOptionsApply,
+    },
   }
-
-  -- Try to add traits at file load time
-  local allTraits = TraitFactory.getTraits()
-  if allTraits and allTraits:size() > 0 then
-    print("[PM_RandomizeTraits] Adding " .. tostring(allTraits:size()) .. " traits at FILE LOAD TIME")
-    for i = 0, allTraits:size() - 1 do
-      local trait = allTraits:get(i)
-      local traitID = trait:getType()
-      options_data["Trait_" .. traitID] = {
-        name = trait:getLabel(),
-        tooltip = "UI_PM_RandomizeTraits_TraitSetting_ToolTip",
-        default = "Normal",
-        values = {"Normal", "Exclude", "Preselect"},
-        OnApplyMainMenu = onModOptionsApply,
-        OnApplyInGame = onModOptionsApply,
-      }
-      PM_RandomizeTraits.traitSettings[traitID] = "Normal"
-    end
-  else
-    print("[PM_RandomizeTraits] TraitFactory EMPTY at file load time, traits will NOT appear in ModOptions")
-  end
 
   local SETTINGS = {
     options_data = options_data,
