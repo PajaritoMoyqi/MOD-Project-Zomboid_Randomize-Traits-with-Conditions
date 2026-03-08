@@ -6,6 +6,13 @@ PM_RandomizeTraits.settings.Preselect = true;
 PM_RandomizeTraits.settings.HardPreselect = false;
 PM_RandomizeTraits.settings.AutoReRandomize = false;
 
+-- DEBUG: Check TraitFactory availability at file load time
+local _debugTraits = TraitFactory.getTraits()
+print("[PM_RandomizeTraits] FILE LOAD TIME - TraitFactory.getTraits() = " .. tostring(_debugTraits))
+if _debugTraits then
+  print("[PM_RandomizeTraits] FILE LOAD TIME - trait count = " .. tostring(_debugTraits:size()))
+end
+
 if ModOptions and ModOptions.getInstance then
   local function onModOptionsApply(optionValues)
     PM_RandomizeTraits.settings.Preselect = optionValues.settings.options.Preselect;
@@ -21,7 +28,6 @@ if ModOptions and ModOptions.getInstance then
     end
   end
 
-  -- Register ModOptions at file load time (basic options first)
   local options_data = {
     Preselect = {
       name = "UI_PM_RandomizeTraits_Options_Preselect",
@@ -46,6 +52,27 @@ if ModOptions and ModOptions.getInstance then
     },
   }
 
+  -- Try to add traits at file load time
+  local allTraits = TraitFactory.getTraits()
+  if allTraits and allTraits:size() > 0 then
+    print("[PM_RandomizeTraits] Adding " .. tostring(allTraits:size()) .. " traits at FILE LOAD TIME")
+    for i = 0, allTraits:size() - 1 do
+      local trait = allTraits:get(i)
+      local traitID = trait:getType()
+      options_data["Trait_" .. traitID] = {
+        name = trait:getLabel(),
+        tooltip = "UI_PM_RandomizeTraits_TraitSetting_ToolTip",
+        default = "Normal",
+        values = {"Normal", "Exclude", "Preselect"},
+        OnApplyMainMenu = onModOptionsApply,
+        OnApplyInGame = onModOptionsApply,
+      }
+      PM_RandomizeTraits.traitSettings[traitID] = "Normal"
+    end
+  else
+    print("[PM_RandomizeTraits] TraitFactory EMPTY at file load time, traits will NOT appear in ModOptions")
+  end
+
   local SETTINGS = {
     options_data = options_data,
     mod_id = 'PM_RandomizeTraits',
@@ -54,30 +81,6 @@ if ModOptions and ModOptions.getInstance then
   }
   ModOptions:getInstance(SETTINGS)
   ModOptions:loadFile()
-
-  -- Add trait options after TraitFactory is populated
-  -- (options_data is a reference, so additions are visible to ModOptions)
-  Events.OnGameBoot.Add(function()
-    local allTraits = TraitFactory.getTraits()
-    if allTraits then
-      for i = 0, allTraits:size() - 1 do
-        local trait = allTraits:get(i)
-        local traitID = trait:getType()
-        options_data["Trait_" .. traitID] = {
-          name = trait:getLabel(),
-          tooltip = "UI_PM_RandomizeTraits_TraitSetting_ToolTip",
-          default = "Normal",
-          values = {"Normal", "Exclude", "Preselect"},
-          OnApplyMainMenu = onModOptionsApply,
-          OnApplyInGame = onModOptionsApply,
-        }
-        PM_RandomizeTraits.traitSettings[traitID] = "Normal"
-      end
-    end
-    -- Re-register with updated options_data including traits
-    ModOptions:getInstance(SETTINGS)
-    ModOptions:loadFile()
-  end)
 
   Events.OnPreMapLoad.Add(function()
     onModOptionsApply({ settings = SETTINGS })
