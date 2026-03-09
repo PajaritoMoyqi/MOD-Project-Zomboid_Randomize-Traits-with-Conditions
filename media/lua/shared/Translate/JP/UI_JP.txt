@@ -1,4 +1,4 @@
-UI_JA = {
+UI_JP = {
     UI_PM_RandomizeTraits_Options_Preselect = "Preselect / Exclude を有効化",
     UI_PM_RandomizeTraits_Options_Preselect_ToolTip = "結果に含める、または除外する特性を事前に指定できます。",
     UI_PM_RandomizeTraits_Options_HardPreselect = "事前選択した特性を常に含める",
