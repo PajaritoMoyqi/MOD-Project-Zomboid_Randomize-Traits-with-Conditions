@@ -57,16 +57,16 @@ PajaritoMoyqi - main mod
 
 ### Translations
 
-English: PajaritoMoyqi
-Korean: PajaritoMoyqi
-Spanish(ES): PajaritoMoyqi
-Spanish(AR): PajaritoMoyqi
-Japanese: PajaritoMoyqi
+English: PajaritoMoyqi<br>
+Korean: PajaritoMoyqi<br>
+Spanish(ES): PajaritoMoyqi<br>
+Spanish(AR): PajaritoMoyqi<br>
+Japanese: PajaritoMoyqi<br>
 
 ## ID
 
-Workshop ID: 
-Mod ID: PM_RandomizeTraitsWithConditions
+Workshop ID: <br>
+Mod ID: PM_RandomizeTraitsWithConditions<br>
 
 
 
@@ -129,13 +129,85 @@ PajaritoMoyqi - 메인 모드
 
 ### 번역
 
-영어: PajaritoMoyqi
-한국어: PajaritoMoyqi
-스페인어(스페인): PajaritoMoyqi
-스페인어(아르헨티나): PajaritoMoyqi
-일본어: PajaritoMoyqi
+영어: PajaritoMoyqi<br>
+한국어: PajaritoMoyqi<br>
+스페인어(스페인): PajaritoMoyqi<br>
+스페인어(아르헨티나): PajaritoMoyqi<br>
+일본어: PajaritoMoyqi<br>
 
 ## ID
 
-Workshop ID: 
-Mod ID: PM_RandomizeTraitsWithConditions
+Workshop ID: <br>
+Mod ID: PM_RandomizeTraitsWithConditions<br>
+
+
+
+## Información
+
+Este mod mejora el botón «ALEATORIO» de la pantalla de selección de personajes de Project Zomboid. Sus principales características son las siguientes:
+
+- Puedes predeterminar los rasgos que deseas excluir por completo del conjunto de rasgos existentes.
+- Puedes predeterminar los rasgos que siempre deseas incluir en el resultado a partir de los rasgos existentes.
+
+Este mod se puede utilizar de diversas formas mediante tres casillas de verificación en «Opciones del juego», dentro de «Mods».
+
+La primera casilla, «Activar Preselect/Exclude», está marcada de forma predeterminada. Te permite elegir qué rasgos incluir o excluir del proceso aleatorio utilizando las opciones Excluir, Normal(Normal: incluir, Exclude: excluir) y Preselect. Cuando se utiliza la opción Preselect, se garantiza que ese rasgo se incluya siempre en el personaje resultante.
+
+La segunda casilla, «Siempre incluir rasgos preseleccionados», pregunta si se desea activar la opción Preselect. Permite incluir rasgos preseleccionados en el personaje resultante. Solo funciona correctamente si la primera casilla está marcada previamente. Si no deseas utilizar Preselect, puedes desmarcar esta casilla.
+
+La tercera casilla, «Re-aleatorizar al cambiar de profesion», garantiza que, si cambia de profesión durante la selección del personaje, los rasgos existentes serán incompatibles con la nueva profesión. Por lo tanto, esta opción hará que los rasgos seleccionados originalmente se cambien aleatoriamente de nuevo de forma automática con el cambio de profesión. Está marcada de forma predeterminada y se recomienda dejarla marcada.
+
+### Notas especiales
+
+Si preseleccionas dos rasgos que no pueden combinarse, solo se seleccionarán los rasgos positivos (por ejemplo, «Valiente» y «Cobarde»). Ten en cuenta también que si ambos rasgos son positivos pero incompatibles («Fuerte» y «Robusto») o ambos son negativos pero incompatibles («En mala forma» y «Fuera de forma»), solo se seleccionará uno automáticamente en función de su orden en la matriz de rasgos.
+
+Los rasgos que no pueden poseer las profesiones determinadas aleatoriamente no se seleccionarán, aunque estén preseleccionados(Preselect).
+
+## Problemas conocidos
+
+Ninguno por ahora.
+
+## Compatibilidad con mods
+
+### Versión
+
+Build 41
+
+### Mods necesarios
+
+- ModOptions (Build 41)
+
+### Mods compatibles
+
+Está implementado para ser compatible con la mayoría de los mods que añaden rasgos. Sin embargo, la siguiente lista solo incluye los mods que han sido verificados.
+
+- More Traits
+
+## Opening the project code to the community
+
+El mod está disponible en GitHub para que otros puedan contribuir.
+
+https://github.com/PajaritoMoyqi/MOD-Project-Zomboid_Randomize-Traits-with-Conditions
+
+En el enlace de GitHub encontrarás cada versión del mod a medida que voy desarrollándolo.
+
+Las actualizaciones periódicas se publicarán en Steam Workshop cuando sea oportuno.
+
+## Autores
+
+### Creadores
+
+PajaritoMoyqi - mod principal
+
+### Traducciones
+
+Inglés: PajaritoMoyqi<br>
+Coreano: PajaritoMoyqi<br>
+Español(ES): PajaritoMoyqi<br>
+Español(AR): PajaritoMoyqi<br>
+Japonés: PajaritoMoyqi<br>
+
+## ID
+
+Workshop ID: <br>
+Mod ID: PM_RandomizeTraitsWithConditions<br>
