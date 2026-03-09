@@ -27,7 +27,7 @@ if ModOptions and ModOptions.getInstance then
       end
     end
 
-    local settings = ModOptions:getInstance(OPTIONS, "PM_RandomizeTraits", "Randomize Traits")
+    local settings = ModOptions:getInstance(OPTIONS, "PM_RandomizeTraits", "Randomize Traits with Conditions")
 
     -- Read OPTIONS table into PM_RandomizeTraits settings
     local function applySettings()
