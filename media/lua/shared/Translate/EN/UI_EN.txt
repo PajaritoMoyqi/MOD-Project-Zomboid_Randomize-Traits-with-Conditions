@@ -1,6 +1,6 @@
 UI_EN = {
-    UI_PM_RandomizeTraits_Options_Preselect = "Preselect Traits",
-    UI_PM_RandomizeTraits_Options_Preselect_ToolTip = "Pre-selected traits will be added before randomizing.",
+    UI_PM_RandomizeTraits_Options_Preselect = "Enable Preselect / Exclude",
+    UI_PM_RandomizeTraits_Options_Preselect_ToolTip = "Allows you to pre-assign traits that must be included or excluded from the result.",
     UI_PM_RandomizeTraits_Options_HardPreselect = "Always Include Preselected Traits",
     UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip = "Traits marked as Preselect will always be included in the result.",
     UI_PM_RandomizeTraits_Options_AutoReRandomize = "Auto Re-Randomize on Profession Change",
