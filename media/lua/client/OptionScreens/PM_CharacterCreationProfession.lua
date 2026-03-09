@@ -201,6 +201,11 @@ function CharacterCreationProfession:onSelectProf(item)
     PM_original_onSelectProf(self, item)
     if PM_RandomizeTraits.settings.AutoReRandomize and not PM_isRandomizing then
         PM_isRandomizing = true;
+        -- Remove all currently selected traits before re-randomizing
+        while #self.listboxTraitSelected.items > 0 do
+            self.listboxTraitSelected.selected = 1;
+            self:onOptionMouseDown(self.removeTraitBtn);
+        end
         PM_doTraitRandomization(self);
         PM_isRandomizing = false;
     end
