@@ -1,5 +1,6 @@
 name=Randomize Traits with Conditions
-poster=tmp.PNG
-description= Get random traits for character with specific conditions.
-id=PM_RandomizeTraits
-Authors=Pajarito moyqi
+poster=poster.png
+description= Get random traits for character with pre-determined conditions.
+id=PM_RandomizeTraitsWithConditions
+Authors=PajaritoMoyqi
+require=ModOptions
