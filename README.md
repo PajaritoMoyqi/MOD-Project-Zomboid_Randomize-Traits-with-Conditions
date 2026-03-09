@@ -273,11 +273,11 @@ PajaritMoyqi　ー　メインMOD
 
 ### 翻訳
 
-英語：PajaritMoyqi
-韓国語：PajaritMoyqi
-スペイン語(スペイン)：PajaritMoyqi
-スペイン語(アルゼンチン)：PajaritMoyqi
-日本語：PajaritMoyqi
+英語：PajaritMoyqi<br>
+韓国語：PajaritMoyqi<br>
+スペイン語(スペイン)：PajaritMoyqi<br>
+スペイン語(アルゼンチン)：PajaritMoyqi<br>
+日本語：PajaritMoyqi<br>
 
 ## ID
 
