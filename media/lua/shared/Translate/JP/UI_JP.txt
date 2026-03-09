@@ -1,0 +1,9 @@
+UI_JP = {
+    UI_PM_RandomizeTraits_Options_Preselect = "Preselect / Exclude を有効化",
+    UI_PM_RandomizeTraits_Options_Preselect_ToolTip = "結果に含める、または除外する特性を事前に指定できます。",
+    UI_PM_RandomizeTraits_Options_HardPreselect = "事前選択した特性を常に含める",
+    UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip = "Preselectに設定された特性は常に結果に含まれます。",
+    UI_PM_RandomizeTraits_Options_AutoReRandomize = "職業変更時に自動で再ランダム",
+    UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip = "選択された特性が新しい職業に合わない場合があるため、職業を変更すると自動的に特性を再ランダム化します。",
+    UI_PM_RandomizeTraits_TraitSetting_ToolTip = "Normal: ランダム対象 / Exclude: ランダムから除外 / Preselect: 常に結果に含む",
+}

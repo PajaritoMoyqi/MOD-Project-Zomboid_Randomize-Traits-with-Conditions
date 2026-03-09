@@ -1,19 +1,3 @@
--- require('OptionScreens/CharacterCreationProfession');
--- PM_RandomizeTraits = CharacterCreationProfession:derive("PM_RandomizeTraits")
-
-function PM_dump(o)
-    if type(o) == 'table' then
-        local s = '{ '
-        for k,v in pairs(o) do
-            if type(k) ~= 'number' then k = '"'..k..'"' end
-            s = s .. '['..k..'] = ' .. PM_dump(v) .. ','
-        end
-        return s .. '} '
-    else
-       return tostring(o)
-    end
-end
-
 function PM_has_value(arr, val)
     for index, value in ipairs(arr) do
         if value == val then
@@ -24,126 +8,114 @@ function PM_has_value(arr, val)
     return false
 end
 
-function CharacterCreationProfession:randomizeTraits() -- {{{
-    -- [PM] check the mod works
-    print( "Hello world!!! - 1" );
+-- Build excluded/preselected trait lists from ModOptions (PM_RandomizeTraits.traitSettings)
+-- Setting values: "Normal" / "Exclude" / "Preselect"
+local function PM_buildTraitLists()
+    local PM_excludedTraits = {}
+    local PM_preselectedTraits = {}
+    local PM_excludedBadTraits = {}
+    local PM_preselectedBadTraits = {}
 
-    self:resetBuild();
+    -- [1] Preselect master toggle: if OFF, all traits are Normal
+    if not PM_RandomizeTraits.settings.Preselect then
+        return PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits
+    end
 
-    -- [PM] select random profession
-    local size = #self.listboxProf.items;
-    local prof = ZombRand(size)+1;
-    self.listboxProf.selected = prof;
-    self:onSelectProf(self.listboxProf.items[self.listboxProf.selected].item);
+    local allTraits = TraitFactory.getTraits()
+    for i = 0, allTraits:size() - 1 do
+        local trait = allTraits:get(i)
+        local traitID = trait:getType()
+        local setting = PM_RandomizeTraits.traitSettings[traitID] or "Normal"
 
-    -- [PM] pre-selected unwanted traits table
-    print( PM_dump( self.listboxTrait.items[#self.listboxTrait.items-4].text ) );
-    print( PM_dump( self.listboxTrait.items[#self.listboxTrait.items-4].itemindex ) );
-    print( PM_dump( self.listboxTrait.items[#self.listboxTrait.items-8].text ) );
-    print( PM_dump( self.listboxTrait.items[#self.listboxTrait.items-8].itemindex ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-1].text ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-1].itemindex ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-3].text ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-3].itemindex ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-11].text ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-11].itemindex ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-43].text ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-43].itemindex ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-44].text ) );
-    print( PM_dump( self.listboxBadTrait.items[#self.listboxBadTrait.items-44].itemindex ) );
+        if setting == "Exclude" then
+            if trait:getCost() >= 0 then
+                table.insert(PM_excludedTraits, traitID)
+            else
+                table.insert(PM_excludedBadTraits, traitID)
+            end
+        elseif setting == "Preselect" then
+            if trait:getCost() >= 0 then
+                table.insert(PM_preselectedTraits, traitID)
+            else
+                table.insert(PM_preselectedBadTraits, traitID)
+            end
+        end
+    end
 
-    -- [PM] 슈퍼 면역, 회피 기동
-    local PM_excludedTraits = {
-        self.listboxTrait.items[#self.listboxTrait.items-4].text,
-        self.listboxTrait.items[#self.listboxTrait.items-8].text,
-    };
-    local PM_excludedBadTraits = {
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-1].text, -- [PM] 팔 절단
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-3].text, -- [PM] 청각장애
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-11].text, -- [PM] 대충대충
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-43].text, -- [PM] 비체계적인
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-44].text, -- [PM] 불운
-    };
+    return PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits
+end
 
-    print( PM_dump( PM_excludedTraits ) );
-    print( PM_dump( PM_excludedBadTraits ) );
+-- Flag to prevent recursion when AutoReRandomize is enabled
+local PM_isRandomizing = false
 
-    -- [PM] Lucky, Organized, Athletic, Strong (if I use MoreTraits)
-    local PM_preselectedTraits = {
-        self.listboxTrait.items[#self.listboxTrait.items-52].text,
-        self.listboxTrait.items[#self.listboxTrait.items-27].text,
-        self.listboxTrait.items[#self.listboxTrait.items-3].text,
-        self.listboxTrait.items[#self.listboxTrait.items-1].text,
-    };
-    -- [PM] Injered, Broke Leg, Burn Ward Patient (if I use MoreTraits)
-    local PM_preselectedBadTraits = {
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-45].text,
-        self.listboxBadTrait.items[#self.listboxBadTrait.items-15].text,
-        self.listboxBadTrait.items[#self.listboxBadTrait.items].text,
-    };
+-- Core trait randomization logic (without profession selection)
+local function PM_doTraitRandomization(self)
+    -- Sync latest settings from OPTIONS table before randomizing
+    if PM_RandomizeTraits.applySettings then
+        PM_RandomizeTraits.applySettings()
+    end
 
-    print( PM_dump( PM_preselectedTraits ) );
-    print( PM_dump( PM_preselectedBadTraits ) );
+    local PM_excludedTraits, PM_preselectedTraits, PM_excludedBadTraits, PM_preselectedBadTraits = PM_buildTraitLists()
 
+    -- [PM] Add preselected good traits
     local PM_i = 0;
     while PM_i < #self.listboxTrait.items do
         local numOfTraits = #self.listboxTrait.items;
 
         self.listboxTrait.selected = #self.listboxTrait.items - PM_i;
-        if ( PM_has_value(PM_preselectedTraits, self.listboxTrait.items[self.listboxTrait.selected].text) ) then
-            print( "PM Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+        if ( PM_has_value(PM_preselectedTraits, self.listboxTrait.items[self.listboxTrait.selected].item:getType()) ) then
             self:onOptionMouseDown(self.addTraitBtn);
         end
-        
+
         PM_i = PM_i + 1 - (numOfTraits - #self.listboxTrait.items);
         if ( PM_i < 0 ) then
             PM_i = 0;
         end
     end
-    
+
+    -- [PM] Add preselected bad traits
     PM_i = 0;
     while PM_i < #self.listboxBadTrait.items do
         local numOfBadTraits = #self.listboxBadTrait.items;
 
         self.listboxBadTrait.selected = #self.listboxBadTrait.items - PM_i;
-        if ( PM_has_value(PM_preselectedBadTraits, self.listboxBadTrait.items[self.listboxBadTrait.selected].text) ) then
-            print( "PM Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+        if ( PM_has_value(PM_preselectedBadTraits, self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType()) ) then
             self:onOptionMouseDown(self.addBadTraitBtn);
         end
-        
+
         PM_i = PM_i + 1 - (numOfBadTraits - #self.listboxBadTrait.items);
         if ( PM_i < 0 ) then
             PM_i = 0;
         end
     end
 
-    -- [PM] Add initial traits
+    -- [PM] Add initial random good traits
     local numTraits = ZombRand(5);
     for i=0,numTraits do
         self.listboxTrait.selected = ZombRand(#self.listboxTrait.items)+1;
-        print( self.listboxTrait.items[self.listboxTrait.selected].text );
-        if ( not PM_has_value(PM_excludedTraits, self.listboxTrait.items[self.listboxTrait.selected].text) ) then
-            print( "Init: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+        local traitType = self.listboxTrait.items[self.listboxTrait.selected].item:getType();
+        if ( not PM_has_value(PM_excludedTraits, traitType) ) then
             self:onOptionMouseDown(self.addTraitBtn);
         else
-            print( "Init: Dup good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
             self.listboxTrait.selected = -1;
         end
     end
 
+    -- [PM] Add initial random bad traits
     local numBadTraits = ZombRand(5);
     for i=0,numBadTraits do
         self.listboxBadTrait.selected = ZombRand(#self.listboxBadTrait.items)+1;
-        print( self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
-        if ( not PM_has_value(PM_excludedBadTraits, self.listboxBadTrait.items[self.listboxBadTrait.selected].text) ) then
-            print( "Init: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+        local traitType = self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType();
+        if ( not PM_has_value(PM_excludedBadTraits, traitType) ) then
             self:onOptionMouseDown(self.addBadTraitBtn);
         else
-            print( "Init: Dup bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
             self.listboxBadTrait.selected = -1;
         end
     end
 
+    -- [PM] Balance points
+    -- [2] HardPreselect: if ON, preselected traits are never removed during balancing
+    local hardPreselect = PM_RandomizeTraits.settings.HardPreselect
     local rescue = 1000;
     while rescue > 0 do
         rescue = rescue - 1;
@@ -157,21 +129,22 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                     local rescue2 = 5;
                     while rescue2 > 0 do
                         local i = ZombRand(#self.listboxTraitSelected.items)+1;
-                        if self.listboxTraitSelected.items[i].item:getCost() > 0 and math.abs(self.listboxTraitSelected.items[i].item:getCost()) <= math.abs(self:PointToSpend()) then
-                            self.listboxTraitSelected.selected = i;
-                            self:onOptionMouseDown(self.removeTraitBtn);
+                        local traitItem = self.listboxTraitSelected.items[i].item;
+                        if traitItem:getCost() > 0 and math.abs(traitItem:getCost()) <= math.abs(self:PointToSpend()) then
+                            if not (hardPreselect and PM_has_value(PM_preselectedTraits, traitItem:getType())) then
+                                self.listboxTraitSelected.selected = i;
+                                self:onOptionMouseDown(self.removeTraitBtn);
+                            end
                         end
                         rescue2 = rescue2 - 1;
                     end
                 else
                     -- add a bad trait
                     self.listboxBadTrait.selected = ZombRand(#self.listboxBadTrait.items)+1;
-                    print( self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
-                    if ( not PM_has_value(PM_excludedBadTraits, self.listboxBadTrait.items[self.listboxBadTrait.selected].text) ) then
-                        print( "On: Add bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
+                    local traitType = self.listboxBadTrait.items[self.listboxBadTrait.selected].item:getType();
+                    if ( not PM_has_value(PM_excludedBadTraits, traitType) ) then
                         self:onOptionMouseDown(self.addBadTraitBtn);
                     else
-                        print( "On: Dup bad trait - ", self.listboxBadTrait.items[self.listboxBadTrait.selected].text );
                         self.listboxBadTrait.selected = -1;
                     end
                 end
@@ -182,25 +155,76 @@ function CharacterCreationProfession:randomizeTraits() -- {{{
                     local rescue2 = 5;
                     while rescue2 > 0 do
                         local i = ZombRand(#self.listboxTraitSelected.items)+1;
-                        if self.listboxTraitSelected.items[i].item:getCost() < 0 and math.abs(self.listboxTraitSelected.items[i].item:getCost()) <= math.abs(self:PointToSpend()) then
-                            self.listboxTraitSelected.selected = i;
-                            self:onOptionMouseDown(self.removeTraitBtn);
+                        local traitItem = self.listboxTraitSelected.items[i].item;
+                        if traitItem:getCost() < 0 and math.abs(traitItem:getCost()) <= math.abs(self:PointToSpend()) then
+                            if not (hardPreselect and PM_has_value(PM_preselectedBadTraits, traitItem:getType())) then
+                                self.listboxTraitSelected.selected = i;
+                                self:onOptionMouseDown(self.removeTraitBtn);
+                            end
                         end
                         rescue2 = rescue2 - 1;
                     end
                 else
                     -- add a good trait
                     self.listboxTrait.selected = ZombRand(#self.listboxTrait.items)+1;
-                    print( self.listboxTrait.items[self.listboxTrait.selected].text );
-                    if ( not PM_has_value(PM_excludedTraits, self.listboxTrait.items[self.listboxTrait.selected].text) ) then
-                        print( "On: Add good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
+                    local traitType = self.listboxTrait.items[self.listboxTrait.selected].item:getType();
+                    if ( not PM_has_value(PM_excludedTraits, traitType) ) then
                         self:onOptionMouseDown(self.addTraitBtn);
                     else
-                        print( "On: Dup good trait - ", self.listboxTrait.items[self.listboxTrait.selected].text );
                         self.listboxTrait.selected = -1;
                     end
                 end
             end
         end
+    end
+end
+
+function CharacterCreationProfession:randomizeTraits() -- {{{
+    PM_isRandomizing = true;
+
+    self:resetBuild();
+
+    -- [PM] select random profession
+    local size = #self.listboxProf.items;
+    local prof = ZombRand(size)+1;
+    self.listboxProf.selected = prof;
+    self:onSelectProf(self.listboxProf.items[self.listboxProf.selected].item);
+
+    PM_doTraitRandomization(self);
+
+    PM_isRandomizing = false;
+end
+
+-- [3] AutoReRandomize: re-randomize traits when user manually selects a profession
+local PM_original_onSelectProf = CharacterCreationProfession.onSelectProf
+function CharacterCreationProfession:onSelectProf(item)
+    PM_original_onSelectProf(self, item)
+    if PM_RandomizeTraits.settings.AutoReRandomize and not PM_isRandomizing then
+        PM_isRandomizing = true;
+        -- Remove all currently selected traits before re-randomizing
+        -- Iterate backwards: skip profession-granted traits that can't be removed
+        local remaining = #self.listboxTraitSelected.items
+        while remaining > 0 do
+            local countBefore = #self.listboxTraitSelected.items
+            self.listboxTraitSelected.selected = remaining
+            self:onOptionMouseDown(self.removeTraitBtn)
+            if #self.listboxTraitSelected.items < countBefore then
+                remaining = #self.listboxTraitSelected.items
+            else
+                remaining = remaining - 1
+            end
+        end
+        PM_doTraitRandomization(self);
+        PM_isRandomizing = false;
+    end
+end
+
+-- Print all available trait IDs to console (for discovering new trait IDs)
+function PM_PrintAllTraitIDs()
+    local allTraits = TraitFactory.getTraits()
+    print("=== All Available Trait IDs ===")
+    for i=0, allTraits:size()-1 do
+        local trait = allTraits:get(i)
+        print(trait:getType() .. " | " .. trait:getLabel() .. " | cost: " .. trait:getCost())
     end
 end

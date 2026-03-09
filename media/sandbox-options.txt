@@ -1,9 +1,1 @@
 VERSION = 1,
-
-option PM_RandomizeTraits.PreselectInjered
-{
-	type = boolean,
-  default = false,
-	page = PM_RandomizeTraits,
-  translation = PM_RandomizeTraits_PreselectInjered,
-}

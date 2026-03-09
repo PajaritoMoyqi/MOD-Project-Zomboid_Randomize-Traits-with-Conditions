@@ -1,0 +1,9 @@
+UI_AR = {
+    UI_PM_RandomizeTraits_Options_Preselect = "Activar Preselect / Exclude",
+    UI_PM_RandomizeTraits_Options_Preselect_ToolTip = "Permite preasignar rasgos que deben incluirse o excluirse del resultado.",
+    UI_PM_RandomizeTraits_Options_HardPreselect = "Siempre incluir rasgos preseleccionados",
+    UI_PM_RandomizeTraits_Options_HardPreselect_ToolTip = "Los rasgos marcados como Preselect siempre se incluyen en el resultado.",
+    UI_PM_RandomizeTraits_Options_AutoReRandomize = "Re-aleatorizar al cambiar de profesion",
+    UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip = "Re-aleatoriza los rasgos automaticamente al cambiar de profesion, ya que los rasgos seleccionados pueden no ser adecuados para la nueva profesion.",
+    UI_PM_RandomizeTraits_TraitSetting_ToolTip = "Normal: objetivo aleatorio / Exclude: excluido del aleatorio / Preselect: siempre incluido en el resultado",
+}
