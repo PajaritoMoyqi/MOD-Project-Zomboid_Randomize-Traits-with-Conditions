@@ -13,6 +13,7 @@ if ModOptions and ModOptions.getInstance then
       Preselect = true,
       HardPreselect = true,
       AutoReRandomize = true,
+      ResetAll = false,
     }
 
     -- Add all traits as dropdown options (default = 1 = Normal)
@@ -65,6 +66,22 @@ if ModOptions and ModOptions.getInstance then
     autoReRandomize.tooltip = getText("UI_PM_RandomizeTraits_Options_AutoReRandomize_ToolTip")
     autoReRandomize.OnApplyMainMenu = applySettings
     autoReRandomize.OnApplyInGame = applySettings
+
+    -- Configure ResetAll toggle
+    local resetAll = settings:getData("ResetAll")
+    resetAll.name = getText("UI_PM_RandomizeTraits_Options_ResetAll")
+    resetAll.tooltip = getText("UI_PM_RandomizeTraits_Options_ResetAll_ToolTip")
+    local function onResetAll()
+      if OPTIONS.ResetAll then
+        for _, traitInfo in ipairs(traitInfos) do
+          OPTIONS["Trait_" .. traitInfo.id] = 1
+        end
+        OPTIONS.ResetAll = false
+        applySettings()
+      end
+    end
+    resetAll.OnApplyMainMenu = onResetAll
+    resetAll.OnApplyInGame = onResetAll
 
     -- Configure dropdown choices for each trait + callbacks
     for _, traitInfo in ipairs(traitInfos) do
